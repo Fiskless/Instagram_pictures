@@ -17,8 +17,10 @@ def load_picture(picture_name, url):
 
 response = requests.get('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 response.raise_for_status()
-link_shorten = response.json()['links']['flickr']['original']
-for l in link_shorten:
-    print(l)
+picture_url = response.json()['links']['flickr']['original']
+
+for picture_index, url_picture in enumerate(picture_url):
+    load_picture(f'spacex{picture_index+1}.jpg', url_picture)
+
 
 
