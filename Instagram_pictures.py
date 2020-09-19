@@ -17,12 +17,23 @@ def fetch_spacex_last_launch(url_from_spacexdata):
             file.write(response.content)
 
 
+#
+# fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
+#
 
-fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 
 response = requests.get('http://hubblesite.org/api/v3/image/1')
 response.raise_for_status()
 hubble_pictures = response.json()['image_files']
 for image_index, image_url in enumerate(hubble_pictures):
     print(hubble_pictures[image_index]['file_url'])
+
+
+
+def picture_expansion(url):
+    expansion = url.split('.')[-1]
+    print(expansion)
+
+
+
 
