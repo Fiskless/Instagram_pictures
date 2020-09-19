@@ -1,6 +1,7 @@
 import requests
 import os
 
+
 def load_picture(picture_name, url):
 
     if not os.path.exists('images'):
@@ -15,12 +16,15 @@ def load_picture(picture_name, url):
         file.write(response.content)
 
 
-response = requests.get('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
-response.raise_for_status()
-picture_url = response.json()['links']['flickr']['original']
+def fetch_spacex_last_launch(url_from_spacexdata):
 
-for picture_index, url_picture in enumerate(picture_url):
-    load_picture(f'spacex{picture_index+1}.jpg', url_picture)
+    response = requests.get(url_from_spacexdata)
+    response.raise_for_status()
+    picture_url = response.json()['links']['flickr']['original']
+
+    for picture_index, url_picture in enumerate(picture_url):
+        load_picture(f'spacex{picture_index+1}.jpg', url_picture)
 
 
+fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 
