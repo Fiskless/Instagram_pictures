@@ -1,6 +1,9 @@
 import requests
 import os
+import urllib3
 
+
+urllib3.disable_warnings()
 def fetch_spacex_last_launch(url_from_spacexdata):
 
     response = requests.get(url_from_spacexdata)
@@ -17,18 +20,23 @@ def fetch_spacex_last_launch(url_from_spacexdata):
             file.write(response.content)
 
 
-#
-# fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
-#
+#fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
+
+def hubble_pictures_load(id):
+
+    response = requests.get(f'http://hubblesite.org/api/v3/image/{id}')
+    response.raise_for_status()
+    hubble_picture_url = response.json()['image_files'][-1]['file_url']
+    expansion = hubble_picture_url.split('.')[-1]
+    if not os.path.exists('images'):
+        os.makedirs('images')
+    filename = f'images/image_{id}.{expansion}'
+    response = requests.get(f'https:{hubble_picture_url}', verify = False)
+    response.raise_for_status()
+    with open(filename, 'wb') as file:
+        file.write(response.content)
 
 
-response = requests.get('http://hubblesite.org/api/v3/image/1')
-response.raise_for_status()
-hubble_pictures_url = response.json()['image_files'][-1]['file_url']    #Ссылка на картинку из хабла
-print(hubble_pictures_url)
+hubble_pictures_load(3)
 
-#
-def picture_expansion(url):
-    expansion = url.split('.')[-1]
-    print(expansion)
-#
+
