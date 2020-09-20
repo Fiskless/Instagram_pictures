@@ -4,6 +4,8 @@ import urllib3
 
 
 urllib3.disable_warnings()
+
+
 def fetch_spacex_last_launch(url_from_spacexdata):
 
     response = requests.get(url_from_spacexdata)
@@ -20,8 +22,6 @@ def fetch_spacex_last_launch(url_from_spacexdata):
             file.write(response.content)
 
 
-#fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
-
 def hubble_pictures_load(id):
 
     response = requests.get(f'http://hubblesite.org/api/v3/image/{id}')
@@ -37,6 +37,9 @@ def hubble_pictures_load(id):
         file.write(response.content)
 
 
-hubble_pictures_load(3)
-
-
+response = requests.get('http://hubblesite.org/api/v3/images/spacecraft')
+response.raise_for_status()
+collection = response.json()
+for picture_index, pictures_id in enumerate(collection):
+    collection_pictures_id = response.json()[picture_index]['id']
+    hubble_pictures_load(collection_pictures_id)
