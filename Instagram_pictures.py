@@ -1,6 +1,7 @@
 import requests
 import os
 import urllib3
+from PIL import Image
 
 
 urllib3.disable_warnings()
@@ -35,9 +36,16 @@ def hubble_pictures_load(id):
     response.raise_for_status()
     with open(filename, 'wb') as file:
         file.write(response.content)
+    if not os.path.exists('images_for_Instagram'):
+        os.makedirs('images_for_Instagram')
+    image = Image.open(f"images/image_{collection_pictures_id}.{expansion}")
+    image.thumbnail((1080, 1080))
+    image_convert = image.convert('RGB')
+    image_convert.save(f"images_for_Instagram/new_image_{collection_pictures_id}.jpg")
 
 
-response = requests.get('http://hubblesite.org/api/v3/images/spacecraft')
+
+response = requests.get('http://hubblesite.org/api/v3/images/stsci_gallery')
 response.raise_for_status()
 collection = response.json()
 for picture_index, pictures_id in enumerate(collection):
