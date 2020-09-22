@@ -6,6 +6,7 @@ from instabot import Bot
 from os import  listdir
 from os.path import isfile
 from os.path import join as joinpath
+from dotenv import load_dotenv
 
 
 def fetch_spacex_last_launch(url_from_spacexdata):
@@ -53,6 +54,11 @@ def hubble_pictures_load(id):
 
 if __name__ == '__main__':
 
+
+    load_dotenv()
+    instagram_login = os.getenv("INSTAGRAM_LOGIN")
+    instagram_password = os.getenv("INSTAGRAM_PASSWORD")
+
     urllib3.disable_warnings()
 
     fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
@@ -65,12 +71,8 @@ if __name__ == '__main__':
         hubble_pictures_load(collection_pictures_id)
 
     bot = Bot()
-    bot.login(username="Pavpavvla", password="Paul455034")
+    bot.login(username="instagram_login", password="instagram_password")
     mypath = "images_for_instagram"
     for i in listdir(mypath):
         if isfile(joinpath(mypath,i)):
             bot.upload_photo(f"images_for_instagram/{i}", caption="Nice pic!")
-
-
-
-
