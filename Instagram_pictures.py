@@ -2,9 +2,10 @@ import requests
 import os
 import urllib3
 from PIL import Image
-
-
-urllib3.disable_warnings()
+from instabot import Bot
+from os import  listdir
+from os.path import isfile
+from os.path import join as joinpath
 
 
 def fetch_spacex_last_launch(url_from_spacexdata):
@@ -21,6 +22,12 @@ def fetch_spacex_last_launch(url_from_spacexdata):
         response.raise_for_status()
         with open(filename, 'wb') as file:
             file.write(response.content)
+        if not os.path.exists('images_for_instagram'):
+            os.makedirs('images_for_instagram')
+        image = Image.open(f"images/spacex{picture_index+1}.jpg")
+        image.thumbnail((1080, 1080))
+        image_convert = image.convert('RGB')
+        image_convert.save(f"images_for_instagram/new_spacex{picture_index+1}.jpg")
 
 
 def hubble_pictures_load(id):
@@ -36,18 +43,34 @@ def hubble_pictures_load(id):
     response.raise_for_status()
     with open(filename, 'wb') as file:
         file.write(response.content)
-    if not os.path.exists('images_for_Instagram'):
-        os.makedirs('images_for_Instagram')
+    if not os.path.exists('images_for_instagram'):
+        os.makedirs('images_for_instagram')
     image = Image.open(f"images/image_{collection_pictures_id}.{expansion}")
     image.thumbnail((1080, 1080))
     image_convert = image.convert('RGB')
-    image_convert.save(f"images_for_Instagram/new_image_{collection_pictures_id}.jpg")
+    image_convert.save(f"images_for_instagram/new_image_{collection_pictures_id}.jpg")
+
+
+if __name__ == '__main__':
+
+    urllib3.disable_warnings()
+
+    fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
+
+    response = requests.get('http://hubblesite.org/api/v3/images/holiday_cards')
+    response.raise_for_status()
+    collection = response.json()
+    for picture_index, pictures_id in enumerate(collection):
+        collection_pictures_id = response.json()[picture_index]['id']
+        hubble_pictures_load(collection_pictures_id)
+
+    bot = Bot()
+    bot.login(username="Pavpavvla", password="Paul455034")
+    mypath = "images_for_instagram"
+    for i in listdir(mypath):
+        if isfile(joinpath(mypath,i)):
+            bot.upload_photo(f"images_for_instagram/{i}", caption="Nice pic!")
 
 
 
-response = requests.get('http://hubblesite.org/api/v3/images/stsci_gallery')
-response.raise_for_status()
-collection = response.json()
-for picture_index, pictures_id in enumerate(collection):
-    collection_pictures_id = response.json()[picture_index]['id']
-    hubble_pictures_load(collection_pictures_id)
+
