@@ -71,7 +71,7 @@ if __name__ == '__main__':
         hubble_pictures_load(collection_pictures_id)
 
     bot = Bot()
-    bot.login(username="instagram_login", password="instagram_password")
+    bot.login(username=instagram_login, password=instagram_password)
     mypath = "images_for_instagram"
     for i in listdir(mypath):
         if isfile(joinpath(mypath,i)):
