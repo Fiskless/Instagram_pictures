@@ -57,7 +57,12 @@ if __name__ == '__main__':
 
 
 
+
     urllib3.disable_warnings()
+
+    load_dotenv()
+    instagram_login = os.getenv("INSTAGRAM_LOGIN")
+    instagram_password = os.getenv("INSTAGRAM_PASSWORD")
 
     fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 
