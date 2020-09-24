@@ -55,9 +55,7 @@ def hubble_pictures_load(id):
 if __name__ == '__main__':
 
 
-    load_dotenv()
-    instagram_login = os.getenv("INSTAGRAM_LOGIN")
-    instagram_password = os.getenv("INSTAGRAM_PASSWORD")
+
 
     urllib3.disable_warnings()
 
@@ -69,6 +67,10 @@ if __name__ == '__main__':
     # for picture_index, pictures_id in enumerate(collection):
     #     collection_pictures_id = response.json()[picture_index]['id']
     #     hubble_pictures_load(collection_pictures_id)
+
+    load_dotenv()
+    instagram_login = os.getenv("INSTAGRAM_LOGIN")
+    instagram_password = os.getenv("INSTAGRAM_PASSWORD")
 
     bot = Bot()
     bot.login(username=instagram_login, password=instagram_password)
