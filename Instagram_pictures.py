@@ -61,12 +61,12 @@ if __name__ == '__main__':
 
     fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 
-    # response = requests.get('http://hubblesite.org/api/v3/images/stsci_gallery')
-    # response.raise_for_status()
-    # collection = response.json()
-    # for picture_index, pictures_id in enumerate(collection):
-    #     collection_pictures_id = response.json()[picture_index]['id']
-    #     hubble_pictures_load(collection_pictures_id)
+    response = requests.get('http://hubblesite.org/api/v3/images/news')
+    response.raise_for_status()
+    collection = response.json()
+    for picture_index, pictures_id in enumerate(collection):
+        collection_pictures_id = response.json()[picture_index]['id']
+        hubble_pictures_load(collection_pictures_id)
 
 
     bot = Bot()
