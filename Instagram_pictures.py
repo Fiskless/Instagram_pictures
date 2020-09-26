@@ -16,17 +16,12 @@ def fetch_spacex_last_launch(spacex_url):
     pictures_url = response.json()['links']['flickr']['original']
 
     for picture_index, picture_url in enumerate(pictures_url, start=1):
-
         filename = f'images/spacex{picture_index}.jpg'
         response = requests.get(picture_url)
         response.raise_for_status()
         with open(filename, 'wb') as file:
             file.write(response.content)
-
-        image = Image.open(f"images/spacex{picture_index}.jpg")
-        image.thumbnail((1080, 1080))
-        image_convert = image.convert('RGB')
-        image_convert.save(f"images_for_instagram/new_spacex{picture_index}.jpg")
+        convert_and_save_photo(f"images/spacex{picture_index}.jpg", f"images_for_instagram/new_spacex{picture_index}.jpg")
 
 
 def fetch_hubble_pictures(id):
@@ -40,11 +35,15 @@ def fetch_hubble_pictures(id):
     response.raise_for_status()
     with open(filename, 'wb') as file:
         file.write(response.content)
+    convert_and_save_photo(f"images/image_{collection_pictures_id}.{expansion}", f"images_for_instagram/new_image_{collection_pictures_id}.jpg")
 
-    image = Image.open(f"images/image_{collection_pictures_id}.{expansion}")
+
+def convert_and_save_photo(path_to_picture, path_to_new_picture):
+
+    image = Image.open(path_to_picture)
     image.thumbnail((1080, 1080))
     image_convert = image.convert('RGB')
-    image_convert.save(f"images_for_instagram/new_image_{collection_pictures_id}.jpg")
+    image_convert.save(path_to_new_picture)
 
 
 if __name__ == '__main__':
@@ -65,7 +64,6 @@ if __name__ == '__main__':
     for picture_index, picture_id in enumerate(collection):
         collection_pictures_id = response.json()[picture_index]['id']
         fetch_hubble_pictures(collection_pictures_id)
-
 
     bot = Bot()
     bot.login(username=instagram_login, password=instagram_password)
