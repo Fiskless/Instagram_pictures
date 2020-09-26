@@ -15,10 +15,10 @@ def fetch_spacex_last_launch(spacex_url):
     response.raise_for_status()
     pictures_url = response.json()['links']['flickr']['original']
 
-    for picture_index, url_picture in enumerate(pictures_url, start=1):
+    for picture_index, picture_url in enumerate(pictures_url, start=1):
 
         filename = f'images/spacex{picture_index}.jpg'
-        response = requests.get(url_picture)
+        response = requests.get(picture_url)
         response.raise_for_status()
         with open(filename, 'wb') as file:
             file.write(response.content)
@@ -29,7 +29,7 @@ def fetch_spacex_last_launch(spacex_url):
         image_convert.save(f"images_for_instagram/new_spacex{picture_index}.jpg")
 
 
-def hubble_pictures_load(id):
+def fetch_hubble_pictures(id):
 
     response = requests.get(f'http://hubblesite.org/api/v3/image/{id}')
     response.raise_for_status()
@@ -62,14 +62,14 @@ if __name__ == '__main__':
     response = requests.get('http://hubblesite.org/api/v3/images/wallpaper')
     response.raise_for_status()
     collection = response.json()
-    for picture_index, pictures_id in enumerate(collection):
+    for picture_index, picture_id in enumerate(collection):
         collection_pictures_id = response.json()[picture_index]['id']
-        hubble_pictures_load(collection_pictures_id)
+        fetch_hubble_pictures(collection_pictures_id)
 
 
     bot = Bot()
     bot.login(username=instagram_login, password=instagram_password)
     my_path = "images_for_instagram"
-    for i in listdir(my_path):
-        if isfile(joinpath(my_path,i)):
-            bot.upload_photo(f"images_for_instagram/{i}", caption="Nice pic!")
+    for picture in listdir(my_path):
+        if isfile(joinpath(my_path, picture)):
+            bot.upload_photo(f"images_for_instagram/{picture}", caption="Nice pic!")
