@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
     bot = Bot()
     bot.login(username=instagram_login, password=instagram_password)
-    mypath = "images_for_instagram"
-    for i in listdir(mypath):
-        if isfile(joinpath(mypath,i)):
+    my_path = "images_for_instagram"
+    for i in listdir(my_path):
+        if isfile(joinpath(my_path,i)):
             bot.upload_photo(f"images_for_instagram/{i}", caption="Nice pic!")
