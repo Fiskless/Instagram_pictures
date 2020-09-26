@@ -15,18 +15,18 @@ def fetch_spacex_last_launch(spacex_url):
     response.raise_for_status()
     pictures_url = response.json()['links']['flickr']['original']
 
-    for picture_index, url_picture in enumerate(pictures_url):
+    for picture_index, url_picture in enumerate(pictures_url, start=1):
 
-        filename = f'images/spacex{picture_index+1}.jpg'
+        filename = f'images/spacex{picture_index}.jpg'
         response = requests.get(url_picture)
         response.raise_for_status()
         with open(filename, 'wb') as file:
             file.write(response.content)
 
-        image = Image.open(f"images/spacex{picture_index+1}.jpg")
+        image = Image.open(f"images/spacex{picture_index}.jpg")
         image.thumbnail((1080, 1080))
         image_convert = image.convert('RGB')
-        image_convert.save(f"images_for_instagram/new_spacex{picture_index+1}.jpg")
+        image_convert.save(f"images_for_instagram/new_spacex{picture_index}.jpg")
 
 
 def hubble_pictures_load(id):
