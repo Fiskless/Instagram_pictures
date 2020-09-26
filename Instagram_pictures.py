@@ -9,9 +9,9 @@ from os.path import join as joinpath
 from dotenv import load_dotenv
 
 
-def fetch_spacex_last_launch(url_from_spacexdata):
+def fetch_spacex_last_launch(spacex_url):
 
-    response = requests.get(url_from_spacexdata)
+    response = requests.get(spacex_url)
     response.raise_for_status()
     picture_url = response.json()['links']['flickr']['original']
 
