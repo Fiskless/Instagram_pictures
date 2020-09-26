@@ -40,7 +40,7 @@ def hubble_pictures_load(id):
     response.raise_for_status()
     with open(filename, 'wb') as file:
         file.write(response.content)
-        
+
     image = Image.open(f"images/image_{collection_pictures_id}.{expansion}")
     image.thumbnail((1080, 1080))
     image_convert = image.convert('RGB')
@@ -54,11 +54,8 @@ if __name__ == '__main__':
     instagram_login = os.getenv("INSTAGRAM_LOGIN")
     instagram_password = os.getenv("INSTAGRAM_PASSWORD")
 
-    if not os.path.exists('images'):
-            os.makedirs('images')
-    if not os.path.exists('images_for_instagram'):
-        os.makedirs('images_for_instagram')
-
+    os.makedirs('images', exist_ok=True)
+    os.makedirs('images_for_instagram', exist_ok=True)
 
     fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 
