@@ -13,9 +13,9 @@ def fetch_spacex_last_launch(spacex_url):
 
     response = requests.get(spacex_url)
     response.raise_for_status()
-    picture_url = response.json()['links']['flickr']['original']
+    pictures_url = response.json()['links']['flickr']['original']
 
-    for picture_index, url_picture in enumerate(picture_url):
+    for picture_index, url_picture in enumerate(pictures_url):
         if not os.path.exists('images'):
             os.makedirs('images')
         filename = f'images/spacex{picture_index+1}.jpg'
