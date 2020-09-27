@@ -56,7 +56,7 @@ if __name__ == '__main__':
     os.makedirs('images', exist_ok=True)
     os.makedirs('images_for_instagram', exist_ok=True)
 
-    fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
+    # fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 
     response = requests.get('http://hubblesite.org/api/v3/images/wallpaper')
     response.raise_for_status()
