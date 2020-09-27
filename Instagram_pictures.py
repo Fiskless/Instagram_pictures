@@ -24,13 +24,13 @@ def fetch_spacex_last_launch(spacex_url):
         convert_and_save_photo(f"images/spacex{picture_index}.jpg", f"images_for_instagram/new_spacex{picture_index}.jpg")
 
 
-def fetch_hubble_pictures(id):
+def fetch_hubble_pictures(hubble_id):
 
-    response = requests.get(f'http://hubblesite.org/api/v3/image/{id}')
+    response = requests.get(f'http://hubblesite.org/api/v3/image/{hubble_id}')
     response.raise_for_status()
     hubble_picture_url = response.json()['image_files'][-1]['file_url']
     expansion = hubble_picture_url.split('.')[-1]
-    filename = f'images/image_{id}.{expansion}'
+    filename = f'images/image_{hubble_id}.{expansion}'
     response = requests.get(f'https:{hubble_picture_url}', verify = False)
     response.raise_for_status()
     with open(filename, 'wb') as file:
@@ -58,12 +58,12 @@ if __name__ == '__main__':
 
     fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 
-    # response = requests.get('http://hubblesite.org/api/v3/images/wallpaper')
-    # response.raise_for_status()
-    # collection = response.json()
-    # for picture_index, picture_id in enumerate(collection):
-    #     collection_pictures_id = response.json()[picture_index]['id']
-    #     fetch_hubble_pictures(collection_pictures_id)
+    response = requests.get('http://hubblesite.org/api/v3/images/wallpaper')
+    response.raise_for_status()
+    collection = response.json()
+    for picture_index, picture_id in enumerate(collection):
+        collection_pictures_id = response.json()[picture_index]['id']
+        fetch_hubble_pictures(collection_pictures_id)
 
     bot = Bot()
     bot.login(username=instagram_login, password=instagram_password)
