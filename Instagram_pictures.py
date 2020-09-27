@@ -58,12 +58,12 @@ if __name__ == '__main__':
 
     fetch_spacex_last_launch('https://api.spacexdata.com/v4/launches/5eb87ce8ffd86e000604b33c')
 
-    response = requests.get('http://hubblesite.org/api/v3/images/wallpaper')
-    response.raise_for_status()
-    collection = response.json()
-    for picture_index, picture_id in enumerate(collection):
-        collection_pictures_id = response.json()[picture_index]['id']
-        fetch_hubble_pictures(collection_pictures_id)
+    # response = requests.get('http://hubblesite.org/api/v3/images/wallpaper')
+    # response.raise_for_status()
+    # collection = response.json()
+    # for picture_index, picture_id in enumerate(collection):
+    #     collection_pictures_id = response.json()[picture_index]['id']
+    #     fetch_hubble_pictures(collection_pictures_id)
 
     bot = Bot()
     bot.login(username=instagram_login, password=instagram_password)
