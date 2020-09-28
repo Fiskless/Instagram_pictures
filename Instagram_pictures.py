@@ -16,11 +16,7 @@ def fetch_spacex_last_launch(spacex_url):
     pictures_url = response.json()['links']['flickr']['original']
 
     for picture_index, picture_url in enumerate(pictures_url, start=1):
-        filename = f'images/spacex{picture_index}.jpg'
-        response = requests.get(picture_url)
-        response.raise_for_status()
-        with open(filename, 'wb') as file:
-            file.write(response.content)
+        load_photo_from_internet(f'images/spacex{picture_index}.jpg', picture_url)
         convert_and_save_photo(f"images/spacex{picture_index}.jpg", f"images_for_instagram/new_spacex{picture_index}.jpg")
 
 
@@ -30,11 +26,7 @@ def fetch_hubble_pictures(hubble_id):
     response.raise_for_status()
     hubble_picture_url = response.json()['image_files'][-1]['file_url']
     expansion = hubble_picture_url.split('.')[-1]
-    filename = f'images/image_{hubble_id}.{expansion}'
-    response = requests.get(f'https:{hubble_picture_url}', verify = False)
-    response.raise_for_status()
-    with open(filename, 'wb') as file:
-        file.write(response.content)
+    load_photo_from_internet(f'images/image_{hubble_id}.{expansion}', f'https:{hubble_picture_url}')
     convert_and_save_photo(f"images/image_{collection_pictures_id}.{expansion}", f"images_for_instagram/new_image_{collection_pictures_id}.jpg")
 
 
@@ -44,6 +36,14 @@ def convert_and_save_photo(path_to_picture, path_to_new_picture):
     image.thumbnail((1080, 1080))
     image_convert = image.convert('RGB')
     image_convert.save(path_to_new_picture)
+
+
+def load_photo_from_internet(filename, url):
+    filename = filename
+    response = requests.get(url, verify = False)
+    response.raise_for_status()
+    with open(filename, 'wb') as file:
+        file.write(response.content)
 
 
 if __name__ == '__main__':
